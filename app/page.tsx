@@ -50,7 +50,7 @@ const ALL_PROJECTS: Project[] = [
     preview: "A prose generator iterating on the Cut-Up writing technique. 285 fragments of original writing, randomized in sequence and formatting, are juxtaposed with stock footage that shifts and distorts in tandem.",
     process: "Built in HTML, CSS, and JavaScript. The text engine randomizes typographic scale, indentation, and excerpt selection simultaneously, with no two outputs being the same.",
     tags: ["HTML", "CSS", "JS", "Writing"], date: "2024", roles: ["writing", "design"],
-    previewVideo: "/excerpt_demo.mov",
+    galleryImages: ["exxxey.png"],
     award: "Featured — 2025 Pitt Digital Media & Design Showcase"
   },
   {
@@ -340,7 +340,7 @@ export default function PortfolioHome() {
             {showAbout && (
               <>
                 <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: INK, marginBottom: '0.75rem', paddingTop: '1.5rem' }}>
-                  I have worked for 4 years grounding outreach, customer success, and strategy in UX principles. Studying Digital Narrative and Interactive Design taught me to treat users like protagonists, seeing every step of the product journey as part of a larger story.
+                  I ground outreach, customer success, and strategy in UX principles. Studying Digital Narrative and Interactive Design taught me to treat users like protagonists, seeing every step of the product journey as part of a larger story.
                 </p>
                 <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: INK }}>
                   Off the clock, I'm always experimenting across prose, poetry, and the kitchen.
@@ -349,7 +349,7 @@ export default function PortfolioHome() {
                   For conversations, complaints, or collaborations, I can be reached at{' '}
                   <a href="mailto:rorywalsh425@gmail.com" style={{ color: INK, textDecoration: 'underline' }}>
                     rorywalsh425@gmail.com
-                  </a>{' '}or 570-687-7345.
+                  </a>.
                 </p>
               </>
             )}

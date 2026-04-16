@@ -58,13 +58,13 @@ const ALL_PROJECTS: Project[] = [
     preview: "A first-place B2B pitch for Proofpoint built for the Pitt Professional Sales Academy. We had to make a technical cybersecurity product legible and urgent to a non-technical room.",
     process: "Led creative direction, including original deck and one-pager materials. Collaborated on the narrative arc from problem framing to close.",
     tags: ["Sales", "B2B", "Narrative", "Presentation"], date: "2025", roles: ["strategy", "design"],
-    galleryImages: ["/pp_2.png", "/pp_broch.png", "/pp_1.png"],
     award: "First Place Team — Pitt Professional Sales Academy 2025"
   },
   {
-    id: 3, title: "Pitt UX Hub", link: "#", inProgress: true,
+    id: 3, title: "Pitt UX Hub", link: "https://rwal67.github.io/UX_hub_Pitt/index.html", inProgress: true,
     preview: "Pitt, though having many opportunities for students to get involved in UX and HCI, has no dedicated UX major. We are developing a student-facing directory pulling together coursework, career pathways, and opportunities across departments into one place. Expected April 2026.",
     process: "Collaborating with faculty stakeholders to map Pitt's UX and HCI landscape into a navigable taxonomy of eight career domains. Responsible for information architecture, usability research, and content categorization.",
+    galleryImages: ["pittux.png"],
     tags: ["UX", "WordPress", "Web Development"], date: "2024", roles: ["design", "strategy"]
   },
 ];

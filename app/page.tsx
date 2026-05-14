@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 
 interface Project {
   id: number;
@@ -21,10 +21,8 @@ const ROLES = ['writing', 'design', 'strategy'] as const;
 type Role = typeof ROLES[number];
 
 const BG        = '#f5f1ea';
-const SURFACE   = '#ede8de';
 const INK       = '#1c1510';
 const INK_MID   = 'rgba(28,21,16,0.5)';
-const INK_FAINT = 'rgba(28,21,16,0.25)';
 const RULE      = 'rgba(28,21,16,0.1)';
 
 const TERRA  = '#b85c38';
@@ -54,64 +52,19 @@ const ALL_PROJECTS: Project[] = [
     award: "Featured — 2025 Pitt Digital Media & Design Showcase"
   },
   {
-    id: 4, title: "Proofpoint Sales Case", link: "#",
-    preview: "A first-place B2B pitch for Proofpoint built for the Pitt Professional Sales Academy. We had to make a technical cybersecurity product legible and urgent to a non-technical room.",
-    process: "Led creative direction, including original deck and one-pager materials. Collaborated on the narrative arc from problem framing to close.",
-    tags: ["Sales", "B2B", "Narrative", "Presentation"], date: "2025", roles: ["strategy", "design"],
-    award: "First Place Team — Pitt Professional Sales Academy 2025"
-  },
-  {
     id: 3, title: "Pitt UX Hub", link: "https://rwal67.github.io/UX_hub_Pitt/index.html", inProgress: true,
-    preview: "Pitt, though having many opportunities for students to get involved in UX and HCI, has no dedicated UX major. We are developing a student-facing directory pulling together coursework, career pathways, and opportunities across departments into one place. Expected April 2026.",
-    process: "Collaborating with faculty stakeholders to map Pitt's UX and HCI landscape into a navigable taxonomy of eight career domains. Responsible for information architecture, usability research, and content categorization.",
-    galleryImages: ["pittux.png"],
-    tags: ["UX", "WordPress", "Web Development"], date: "2024", roles: ["design", "strategy"]
+    preview: "Pitt, though having many opportunities for students to get involved in UX and HCI, has no dedicated UX major. We are developing a student-facing directory pulling together coursework, career pathways, and opportunities across departments into one place.",
+    process: "Collaborating with faculty stakeholders to map Pitt's UX and HCI landscape into a navigable taxonomy of career domains. Responsible for frontend development, stakeholder managment, content categorization, and original UI design.",
+    galleryImages: ["uxsnap1.png"],
+    tags: ["UX", "WordPress", "Web Development"], date: "2024", roles: ["strategy", "design"]
   },
 ];
 
-const SLOP = "I'm a passionate storyteller and cross-functional creative catalyst, leveraging human-centered design thinking to architect scalable narrative ecosystems that drive engagement, foster community, and accelerate your brand's journey toward authentic, data-driven impact.";
-const PUNCHLINE = "I'm here to make sure you don't sound like that.";
-
-type Phase = 'typing-slop' | 'pausing' | 'crossing-out' | 'pause-after-cross' | 'typing-punchline' | 'done';
-
-function useTypewriter() {
-  const [slopText, setSlopText] = useState('');
-  const [punchlineText, setPunchlineText] = useState('');
-  const [phase, setPhase] = useState<Phase>('typing-slop');
-  const [crossed, setCrossed] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const idx = useRef(0);
-
-  useEffect(() => {
-    let t: ReturnType<typeof setTimeout>;
-    if (phase === 'typing-slop') {
-      if (idx.current < SLOP.length) {
-        t = setTimeout(() => { setSlopText(SLOP.slice(0, idx.current + 1)); idx.current++; }, 2);
-      } else { t = setTimeout(() => setPhase('pausing'), 200); }
-    }
-    if (phase === 'pausing') { t = setTimeout(() => setPhase('crossing-out'), 50); }
-    if (phase === 'crossing-out') { setCrossed(true); t = setTimeout(() => setPhase('pause-after-cross'), 400); }
-    if (phase === 'pause-after-cross') { t = setTimeout(() => { idx.current = 0; setPhase('typing-punchline'); }, 100); }
-    if (phase === 'typing-punchline') {
-      if (idx.current < PUNCHLINE.length) {
-        t = setTimeout(() => { setPunchlineText(PUNCHLINE.slice(0, idx.current + 1)); idx.current++; }, 8);
-      } else { t = setTimeout(() => setPhase('done'), 200); }
-    }
-    if (phase === 'done') {
-      t = setTimeout(() => setCollapsed(true), 5000);
-    }
-    return () => clearTimeout(t);
-  }, [phase, slopText, punchlineText]);
-
-  return { slopText, punchlineText, phase, crossed, done: phase === 'done', collapsed, expanded, setExpanded };
-}
 
 export default function PortfolioHome() {
   const [activeRole, setActiveRole] = useState<Role | null>(null);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [galleryIndex, setGalleryIndex] = useState(0);
-  const { slopText, punchlineText, phase, crossed, collapsed, expanded, setExpanded } = useTypewriter();
 
   const showAbout = !selectedProject;
 
@@ -152,15 +105,7 @@ export default function PortfolioHome() {
         .proj-pill:hover { opacity: 0.7; }
         .visit-btn { transition: opacity 0.15s ease; }
         .visit-btn:hover { opacity: 0.75 !important; }
-        .gallery-arrow { transition: opacity 0.15s ease; cursor: pointer; user-select: none; }
-        .gallery-arrow:hover { opacity: 0.6; }
-        .cursor-blink::after {
-          content: '|'; animation: blink 0.7s step-end infinite; margin-left: 1px;
-        }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        .slide-reveal { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease; }
-        .slide-reveal.open { max-height: 200px; opacity: 1; }
-        .media-frame { width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 2px; border: 1px solid ${RULE}; background: ${INK}; }
+        .media-frame { width: 100%; aspect-ratio: 16/9; overflow: hidden; border-radius: 2px; }
         @media (max-width: 700px) {
           .main-cols { flex-direction: column !important; }
           .left-col, .right-col { width: 100% !important; flex: unset !important; }
@@ -178,12 +123,12 @@ export default function PortfolioHome() {
               {([
                 { href: 'mailto:rorywalsh425@gmail.com', label: 'Email', bg: TERRA, text: '#f5ede0', download: undefined },
                 { href: 'https://www.linkedin.com/in/rorypwalsh/', label: 'LinkedIn', bg: WALNUT, text: '#f5ede0', download: undefined },
-                { href: '/Rory_Walsh_Resume.pdf', label: 'Resume', bg: SAGE, text: '#f5ede0', download: true },
+                { href: '/RoryWalsh_Resume.pdf', label: 'Resume', bg: SAGE, text: '#f5ede0', download: true },
               ] as const).map(({ href, label, bg, text, download }) => (
                 <a key={label} href={href}
                   target={href.startsWith('mailto') ? undefined : '_blank'}
                   rel="noopener noreferrer"
-                  download={download ? 'Rory_Walsh_Resume.pdf' : undefined}
+                  download={download ? 'RoryWalsh_Resume.pdf' : undefined}
                   className="nav-btn"
                   style={{
                     backgroundColor: bg, color: text,
@@ -213,47 +158,8 @@ export default function PortfolioHome() {
                   textUnderlineOffset: '3px',
                   cursor: selectedProject ? 'pointer' : 'default',
                 }}
-              >Rory</span>.{collapsed && (
-                <sup
-                  onClick={() => setExpanded(e => !e)}
-                  style={{
-                    fontSize: '0.55rem', color: INK, cursor: 'pointer',
-                    userSelect: 'none', marginLeft: '3px', fontWeight: '400',
-                    verticalAlign: 'super', lineHeight: 0,
-                  }}
-                >{expanded ? '∨' : '∧'}</sup>
-              )}
+              >Rory</span>.
             </span>
-          </div>
-
-          {/* Typewriter zone */}
-          <div style={{
-            maxWidth: '640px', marginBottom: '0.1rem',
-            overflow: 'hidden',
-            maxHeight: collapsed && !expanded ? '0' : '8rem',
-            opacity: collapsed && !expanded ? 0 : 1,
-            transition: 'max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease',
-          }}>
-            <div style={{ minHeight: '1.2rem', marginBottom: '0.1rem' }}>
-              {slopText && (
-                <p style={{ margin: 0, fontSize: '0.78rem', lineHeight: '1.55', fontWeight: '400', color: INK }}>
-                  <span style={{
-                    textDecoration: crossed ? `line-through ${INK}` : 'none',
-                    opacity: crossed ? 0.3 : 1,
-                    transition: 'opacity 0.35s ease',
-                  }}>{slopText}</span>
-                  {phase === 'typing-slop' && <span className="cursor-blink" />}
-                </p>
-              )}
-            </div>
-            <div style={{ minHeight: '1.55rem' }}>
-              {(phase === 'typing-punchline' || phase === 'done') && (
-                <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5', fontWeight: '400', color: INK_MID }}>
-                  {punchlineText}
-                  {phase === 'typing-punchline' && <span className="cursor-blink" />}
-                </p>
-              )}
-            </div>
           </div>
 
           {/* Blurb */}
@@ -280,22 +186,19 @@ export default function PortfolioHome() {
                 {i === 1 && ' and '}
               </React.Fragment>
             ))}
-            {' '}to connect with others through the products we use.
           </p>
 
           {/* Project pills */}
-          <div className={`slide-reveal ${activeRole ? 'open' : ''}`}>
+          <div style={{
+            overflow: 'hidden',
+            maxHeight: activeRole ? '200px' : '0',
+            opacity: activeRole ? 1 : 0,
+            transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease',
+          }}>
             <div style={{ height: '1px', backgroundColor: RULE, margin: '0.45rem 0' }} />
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
               {visibleProjects.map(p => {
                 const isSelected = selectedProject?.id === p.id;
-                const roleColors = isSelected && activeRole
-                  ? [activeRole, ...p.roles.filter(r => r !== activeRole)].filter(r => p.roles.includes(r)).map(r => PALETTE[r as Role]?.bg).filter(Boolean)
-                  : p.roles.map(r => PALETTE[r as Role]?.bg).filter(Boolean);
-                const isMultiRole = roleColors.length > 1;
-                const unselectedBg = isMultiRole
-                  ? { background: `linear-gradient(to right, ${roleColors.map((c, i) => `${c}22 ${i * (100 / roleColors.length)}%, ${c}22 ${(i + 1) * (100 / roleColors.length)}%`).join(', ')})` }
-                  : { backgroundColor: `${roleColors[0]}22` };
                 return (
                   <button key={p.id} className="proj-pill"
                     onClick={() => { setSelectedProject(prev => prev?.id === p.id ? null : p); setGalleryIndex(0); }}
@@ -339,11 +242,13 @@ export default function PortfolioHome() {
           <div className="left-col" style={{ width: '38%', flexShrink: 0 }}>
             {showAbout && (
               <>
-                <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: INK, marginBottom: '0.75rem', paddingTop: '1.5rem' }}>
-                  I ground outreach, customer success, and strategy in UX principles. Studying Digital Narrative and Interactive Design taught me to treat users like protagonists, seeing every step of the product journey as part of a larger story.
-                </p>
+                {/* FIX 3: removed paddingTop from all three about paragraphs */}
+               <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: INK, marginBottom: '0.75rem', paddingTop: '0.75rem' }}>
+                  Studying Digital Narrative and Interactive Design taught me that every product touchpoint is a beat in a larger story. I build from that, making users feel like the main character.</p>
+                <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: INK, marginBottom: '0.75rem' }}>
+                  Whether I'm grounding sales and product adoption in UX principles, bringing technical writing into shareholder communications, or using SQL to classify Moby Dick, no tool is off limits in building solutions.</p>
                 <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: INK }}>
-                  Off the clock, I'm always experimenting across prose, poetry, and the kitchen.
+                  And, in my free time, I'm always experimenting across prose, poetry, and the kitchen.
                 </p>
                 <p style={{ fontSize: '0.9rem', lineHeight: '1.8', color: INK, marginTop: '0.75rem' }}>
                   For conversations, complaints, or collaborations, I can be reached at{' '}
@@ -387,7 +292,7 @@ export default function PortfolioHome() {
                   )}
                   {selectedProject.inProgress ? (
                     <p style={{ fontSize: '0.72rem', fontWeight: '700', color: INK, margin: 0 }}>
-                      *Under construction: Expected April 2026
+                      *Under construction
                     </p>
                   ) : selectedProject.award ? (
                     <p style={{ fontSize: '0.72rem', fontStyle: 'italic', color: INK_MID, margin: 0 }}>
@@ -404,7 +309,6 @@ export default function PortfolioHome() {
 
           {/* RIGHT */}
           <div className="right-col" style={{ flex: 1 }}>
-
             {showAbout && (
               <div
                 className="photo-pair"
@@ -446,7 +350,8 @@ export default function PortfolioHome() {
               </div>
             )}
 
-            {selectedProject && (
+            {/* FIX 1: only render media-frame when there is actually media to show */}
+            {selectedProject && (selectedProject.previewVideo || selectedProject.galleryImages) && (
               <div className="media-frame">
                 {selectedProject.previewVideo ? (
                   <video key={selectedProject.id} autoPlay loop muted playsInline
@@ -455,44 +360,19 @@ export default function PortfolioHome() {
                     <source src={selectedProject.previewVideo} type="video/mp4" />
                   </video>
                 ) : selectedProject.galleryImages ? (
-                  <div style={{ width: '100%', height: '100%', position: 'relative', backgroundColor: '#fff' }}>
-                    {/* Nav bar sits in normal flow at top, not overlaid */}
-                    <div style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      padding: '0.3rem 0.6rem', backgroundColor: BG,
-                      borderBottom: `1px solid ${RULE}`,
-                      position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10,
-                    }}>
-                      <span
-                        className="gallery-arrow"
-                        onClick={() => setGalleryIndex(i => Math.max(0, i - 1))}
-                        style={{ fontSize: '0.75rem', fontWeight: '600', opacity: galleryIndex > 0 ? 1 : 0.2 }}
-                      >{'<'}</span>
-                      <span style={{ fontSize: '0.65rem', color: INK_MID }}>
-                        {galleryIndex + 1} / {selectedProject.galleryImages.length}
-                      </span>
-                      <span
-                        className="gallery-arrow"
-                        onClick={() => setGalleryIndex(i => Math.min(selectedProject.galleryImages!.length - 1, i + 1))}
-                        style={{ fontSize: '0.75rem', fontWeight: '600', opacity: galleryIndex < selectedProject.galleryImages.length - 1 ? 1 : 0.2 }}
-                      >{'>'}</span>
-                    </div>
-                    {/* Image offset by nav bar height (~2rem) */}
+                  // FIX 2: removed white background and arrow navigation bar entirely
+                  <div style={{ width: '100%', height: '100%', position: 'relative' }}>
                     <img
                       src={selectedProject.galleryImages[galleryIndex]}
                       alt={`${selectedProject.title} slide ${galleryIndex + 1}`}
                       style={{
-                        position: 'absolute', top: '2rem', left: '4%',
-                        width: '92%', height: 'calc(100% - 2rem)',
+                        position: 'absolute', top: 0, left: 0,
+                        width: '100%', height: '100%',
                         objectFit: 'contain', display: 'block',
                       }}
                     />
                   </div>
-                ) : (
-                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '0.875rem', color: INK_FAINT }}>[in progress]</span>
-                  </div>
-                )}
+                ) : null}
               </div>
             )}
           </div>
